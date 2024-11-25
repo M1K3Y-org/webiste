@@ -5,17 +5,67 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>m1k3y.uk</title>
 <style>
+    /* General Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     body {
+        height: 100vh;
+        width: 100%;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+    }
+
+    /* Initial View */
+    .intro-screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        background-color: black;
+        position: absolute;
+        z-index: 10;
+        transition: opacity 1s ease;
+    }
+
+    .intro-button {
+        font-size: 1.5rem;
+        padding: 0.5rem 1rem;
+        color: white;
+        background-color: grey;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .intro-button:hover {
+        background-color: darkgray;
+    }
+
+    /* Main Content */
+    .main-content {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        margin: 0;
+        height: 100%;
+        width: 100%;
         background: url('background.jpg') no-repeat center center fixed;
         background-size: cover;
-        font-family: Arial, sans-serif;
-        color: white; /* Ensure text is visible on the background */
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        transition: opacity 1s ease, visibility 1s ease;
+    }
+
+    .main-content.visible {
+        opacity: 1;
+        visibility: visible;
     }
 
     .rainbow-text {
@@ -30,20 +80,6 @@
         text-align: center;
     }
 
-    .small-text {
-        margin-top: 1rem;
-        font-size: 1rem;
-        font-weight: normal;
-        text-align: center;
-        opacity: 1;
-        transition: opacity 0.5s ease; /* Smooth fade-out effect */
-    }
-
-    .hidden {
-        opacity: 0;
-        pointer-events: none; /* Prevent interaction after hiding */
-    }
-
     @keyframes rainbow {
         0% { background-position: 0% 50%; }
         100% { background-position: 100% 50%; }
@@ -51,20 +87,38 @@
 </style>
 </head>
 <body>
-    <div class="rainbow-text">Rip KlarGG The Best Public Cheat Of All Time</div>
-    <div class="small-text" id="click-text">Click anywhere</div>
-    <audio id="background-music" src="music.mp3" loop></audio>
+    <!-- Intro Screen -->
+    <div class="intro-screen" id="intro-screen">
+        <button class="intro-button" id="enter-button">Click To Enter</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+        <div class="rainbow-text">Rip KlarGG The Best Public Cheat Of All Time</div>
+        <audio id="background-music" src="music.mp3" loop></audio>
+    </div>
 
     <script>
-        // Play the audio and hide the text after user interaction
-        document.body.addEventListener('click', () => {
-            // Play the background music
-            const audio = document.getElementById('background-music');
-            audio.play().catch(error => console.error('Audio play error:', error));
+        // Elements
+        const introScreen = document.getElementById('intro-screen');
+        const mainContent = document.getElementById('main-content');
+        const enterButton = document.getElementById('enter-button');
+        const backgroundMusic = document.getElementById('background-music');
 
-            // Hide the "Click anywhere" text
-            const clickText = document.getElementById('click-text');
-            clickText.classList.add('hidden');
+        // Button click event
+        enterButton.addEventListener('click', () => {
+            // Fade out intro screen
+            introScreen.style.opacity = '0';
+            introScreen.style.pointerEvents = 'none'; // Disable interactions during fade
+
+            // Fade in main content after the intro screen fades out
+            setTimeout(() => {
+                introScreen.style.display = 'none'; // Remove intro screen from view
+                mainContent.classList.add('visible');
+
+                // Start playing background music
+                backgroundMusic.play().catch(error => console.error('Audio play error:', error));
+            }, 1000); // Matches the transition duration
         });
     </script>
 </body>
