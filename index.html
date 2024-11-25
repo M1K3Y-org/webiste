@@ -36,6 +36,14 @@
 </head>
 <body>
     <div class="rainbow-text">Rip KlarGG The Best Public Cheat Of All Time</div>
-    <audio src="music.mp3" autoplay loop></audio>
+    <audio id="background-music" src="music.mp3" loop></audio>
+
+    <script>
+        // Play the audio after user interaction
+        document.body.addEventListener('click', () => {
+            const audio = document.getElementById('background-music');
+            audio.play().catch(error => console.error('Audio play error:', error));
+        });
+    </script>
 </body>
 </html>
