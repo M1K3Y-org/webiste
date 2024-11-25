@@ -35,6 +35,13 @@
         font-size: 1rem;
         font-weight: normal;
         text-align: center;
+        opacity: 1;
+        transition: opacity 0.5s ease; /* Smooth fade-out effect */
+    }
+
+    .hidden {
+        opacity: 0;
+        pointer-events: none; /* Prevent interaction after hiding */
     }
 
     @keyframes rainbow {
@@ -45,14 +52,19 @@
 </head>
 <body>
     <div class="rainbow-text">Rip KlarGG The Best Public Cheat Of All Time</div>
-    <div class="small-text">Click anywhere</div>
+    <div class="small-text" id="click-text">Click anywhere</div>
     <audio id="background-music" src="music.mp3" loop></audio>
 
     <script>
-        // Play the audio after user interaction
+        // Play the audio and hide the text after user interaction
         document.body.addEventListener('click', () => {
+            // Play the background music
             const audio = document.getElementById('background-music');
             audio.play().catch(error => console.error('Audio play error:', error));
+
+            // Hide the "Click anywhere" text
+            const clickText = document.getElementById('click-text');
+            clickText.classList.add('hidden');
         });
     </script>
 </body>
